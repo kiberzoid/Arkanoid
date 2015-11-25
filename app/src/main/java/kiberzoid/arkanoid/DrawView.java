@@ -8,9 +8,6 @@ import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-/**
- * Created by 1 on 25.11.2015.
- */
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint p;
     private DrawThread d_thread;

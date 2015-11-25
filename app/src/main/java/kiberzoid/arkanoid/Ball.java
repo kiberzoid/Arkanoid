@@ -4,9 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-/**
- * Created by 1 on 25.11.2015.
- */
 public class Ball {
 
     private int xPos;
