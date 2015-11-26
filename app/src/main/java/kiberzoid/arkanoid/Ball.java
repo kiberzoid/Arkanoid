@@ -3,6 +3,7 @@ package kiberzoid.arkanoid;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 public class Ball {
 
@@ -38,7 +39,9 @@ public class Ball {
     public void set_y(int yPos){
         this.yPos = yPos;
     }
-    public void update(int width, int height){
+
+
+    public void update(int width, int height, Platform platform){
         xPos+=xSpeed;
         yPos+=ySpeed;
         if(yPos<0){
@@ -57,6 +60,18 @@ public class Ball {
             xPos = width-radius;
             xSpeed*=-1;
         }
+        if((yPos>platform.getBottom())&&(xPos>platform.getLeft())&&(xPos<platform.getRight())){
+            yPos = platform.getBottom()-radius;
+            ySpeed*=-1;
+        }
+        /*if((xPos<platform.getLeft())&&(yPos>=platform.getBottom())){
+            xPos = platform.getLeft()+radius;
+            xSpeed*=-1;
+        }
+        if((xPos>platform.getRight())&&(yPos>=platform.getBottom())){
+            xPos = platform.getRight()-radius;
+            xSpeed*=-1;
+        }*/
     }
     public void drawBall(Canvas canvas,Paint p){
         canvas.drawColor(Color.WHITE);
