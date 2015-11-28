@@ -9,9 +9,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
-    private Paint p;
+    private Paint pCircle;
+    private Paint pLine;
     private DrawThread d_thread;
     private Ball ball;
+    private Platform platform;
     private int width;
     private int height;
 
@@ -25,10 +27,17 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         Rect surfaceFrame = holder.getSurfaceFrame();
         width = surfaceFrame.width();
         height = surfaceFrame.height();
-        p = new Paint();
-        p.setColor(Color.BLUE);
-        p.setStrokeWidth(10);
         ball = new Ball(width / 2, 30, 30, 20, 20);
+        platform = new Platform(height/3,height-1,2*width/3,height-1);
+        pCircle = new Paint();
+        pLine = new Paint();
+
+        pCircle.setColor(Color.BLUE);
+        pCircle.setStrokeWidth(10);
+        pLine.setColor(Color.GREEN);
+        pLine.setStrokeWidth(30);
+        //pRect.setStyle(Paint.Style.STROKE);
+
         d_thread = new DrawThread(holder);
         d_thread.setRunning(true);
         d_thread.start();
@@ -48,12 +57,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                 d_thread.join();
                 retry = false;
             } catch (InterruptedException e) {
-
+                e.printStackTrace();
             }
         }
     }
 
-    class DrawThread extends Thread {
+    private class DrawThread extends Thread {
         private boolean running = false;
         private SurfaceHolder holder;
 
@@ -74,8 +83,9 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas = holder.lockCanvas();
                     if (canvas == null)
                         continue;
-                    DrawView.this.ball.update(DrawView.this.width,DrawView.this.height);
-                    DrawView.this.ball.drawBall(canvas, DrawView.this.p);
+                    DrawView.this.ball.update(DrawView.this.width,DrawView.this.height,DrawView.this.platform);
+                    DrawView.this.ball.drawBall(canvas, DrawView.this.pCircle);
+                    DrawView.this.platform.drawPlatform(canvas, DrawView.this.pLine);
                 } finally {
                     if (canvas != null)
                         holder.unlockCanvasAndPost(canvas);
