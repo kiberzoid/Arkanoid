@@ -42,35 +42,23 @@ public class Ball {
 
 
     public void update(int width, int height, Platform platform){
-        if(yPos<0){
-            yPos = radius;
+        if(yPos-radius<=0){
             ySpeed*=-1;
         }
-        if(yPos>height){
-            yPos = height-radius;
+        if(yPos+radius>=height){
             ySpeed*=-1;
         }
-        if(xPos<0){
-            xPos = radius;
+        if(xPos-radius<=0){
             xSpeed*=-1;
         }
-        if(xPos>width){
-            xPos = width-radius;
+        if(xPos+radius>=width){
             xSpeed*=-1;
         }
-       if((yPos>platform.get_yStart()-radius)&&(xPos>platform.get_xStart())&&(xPos<platform.get_xStop())){
+       if((yPos>=platform.get_yStart()-platform.getStrokeWidth()-radius)&&(xPos>=platform.get_xStart())&&(xPos<=platform.get_xStop())){
             ySpeed*=-1;
         }
         xPos+=xSpeed;
         yPos+=ySpeed;
-        /*if((xPos<platform.getLeft())&&(yPos>=platform.getBottom())){
-            xPos = platform.getLeft()+radius;
-            xSpeed*=-1;
-        }
-        if((xPos>platform.getRight())&&(yPos>=platform.getBottom())){
-            xPos = platform.getRight()-radius;
-            xSpeed*=-1;
-        }*/
     }
     public void drawBall(Canvas canvas,Paint p){
         canvas.drawColor(Color.WHITE);
