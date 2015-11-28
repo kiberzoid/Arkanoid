@@ -27,15 +27,16 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         Rect surfaceFrame = holder.getSurfaceFrame();
         width = surfaceFrame.width();
         height = surfaceFrame.height();
-        ball = new Ball(width / 2, 30, 30, 20, 20);
-        platform = new Platform(height/3,height-1,2*width/3,height-1);
+        int stWidthPlatform = 30;
+        ball = new Ball(width / 2, 40, 30, 20, 20);
+        platform = new Platform(height/3,height-1,2*width/3,height-1,stWidthPlatform);
         pCircle = new Paint();
         pLine = new Paint();
 
         pCircle.setColor(Color.BLUE);
         pCircle.setStrokeWidth(10);
         pLine.setColor(Color.GREEN);
-        pLine.setStrokeWidth(30);
+        pLine.setStrokeWidth(stWidthPlatform);
         //pRect.setStyle(Paint.Style.STROKE);
 
         d_thread = new DrawThread(holder);

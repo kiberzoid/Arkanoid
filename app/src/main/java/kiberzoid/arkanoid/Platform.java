@@ -10,16 +10,22 @@ public class Platform {
     private float yStart;
     private float xStop;
     private float yStop;
+    private int strokeWidth;
 
-    public Platform(float xStart, float yStart, float xStop, float yStop) {
+    public Platform(float xStart, float yStart, float xStop, float yStop, int strokeWidth) {
         this.xStart = xStart;
         this.yStart = yStart;
         this.xStop = xStop;
         this.yStop = yStop;
+        this.strokeWidth = strokeWidth;
     }
 
     public void drawPlatform(Canvas canvas, Paint p) {
         canvas.drawLine(xStart, yStart, xStop, yStop, p);
+    }
+
+    public float getStrokeWidth() {
+        return this.strokeWidth;
     }
 
     public float getWidth() {
@@ -38,7 +44,7 @@ public class Platform {
         return xStop;
     }
 
-    public float get_yStoph() {
+    public float get_yStop() {
         return yStop;
     }
 
