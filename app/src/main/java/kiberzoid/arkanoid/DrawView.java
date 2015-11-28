@@ -10,7 +10,7 @@ import android.view.SurfaceView;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint pCircle;
-    private Paint pRect;
+    private Paint pLine;
     private DrawThread d_thread;
     private Ball ball;
     private Platform platform;
@@ -28,15 +28,15 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         width = surfaceFrame.width();
         height = surfaceFrame.height();
         ball = new Ball(width / 2, 30, 30, 20, 20);
-        platform = new Platform(height-1,height-50,width/3,2*width/3);
+        platform = new Platform(height/3,height-1,2*width/3,height-1);
         pCircle = new Paint();
-        pRect = new Paint();
+        pLine = new Paint();
 
         pCircle.setColor(Color.BLUE);
         pCircle.setStrokeWidth(10);
-        pRect.setColor(Color.GREEN);
-        pRect.setStrokeWidth(10);
-        pRect.setStyle(Paint.Style.STROKE);
+        pLine.setColor(Color.GREEN);
+        pLine.setStrokeWidth(30);
+        //pRect.setStyle(Paint.Style.STROKE);
 
         d_thread = new DrawThread(holder);
         d_thread.setRunning(true);
@@ -85,7 +85,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                         continue;
                     DrawView.this.ball.update(DrawView.this.width,DrawView.this.height,DrawView.this.platform);
                     DrawView.this.ball.drawBall(canvas, DrawView.this.pCircle);
-                    DrawView.this.platform.drawPlatform(canvas, DrawView.this.pRect);
+                    DrawView.this.platform.drawPlatform(canvas, DrawView.this.pLine);
                 } finally {
                     if (canvas != null)
                         holder.unlockCanvasAndPost(canvas);

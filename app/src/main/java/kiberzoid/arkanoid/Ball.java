@@ -42,8 +42,6 @@ public class Ball {
 
 
     public void update(int width, int height, Platform platform){
-        xPos+=xSpeed;
-        yPos+=ySpeed;
         if(yPos<0){
             yPos = radius;
             ySpeed*=-1;
@@ -60,10 +58,11 @@ public class Ball {
             xPos = width-radius;
             xSpeed*=-1;
         }
-        if((yPos>platform.getBottom())&&(xPos>platform.getLeft())&&(xPos<platform.getRight())){
-            yPos = platform.getBottom()-radius;
+       if((yPos>platform.get_yStart()-radius)&&(xPos>platform.get_xStart())&&(xPos<platform.get_xStop())){
             ySpeed*=-1;
         }
+        xPos+=xSpeed;
+        yPos+=ySpeed;
         /*if((xPos<platform.getLeft())&&(yPos>=platform.getBottom())){
             xPos = platform.getLeft()+radius;
             xSpeed*=-1;

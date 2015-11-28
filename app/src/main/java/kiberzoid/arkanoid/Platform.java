@@ -6,31 +6,40 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Platform {
+    private float xStart;
+    private float yStart;
+    private float xStop;
+    private float yStop;
 
-    private Rect rect;
-
-    public Platform(int top,int bottom,int left,int right){
-        rect = new Rect(left,top,right,bottom);
-    }
-
-    public void drawPlatform(Canvas canvas,Paint p){
-        canvas.drawRect(rect,p);
-    }
-
-    public int getLeft(){
-        return this.rect.left;
-    }
-    public int getTop(){
-        return this.rect.top;
-    }
-    public int getRight(){
-        return this.rect.right;
-    }
-    public int getBottom(){
-        return this.rect.bottom;
+    public Platform(float xStart, float yStart, float xStop, float yStop) {
+        this.xStart = xStart;
+        this.yStart = yStart;
+        this.xStop = xStop;
+        this.yStop = yStop;
     }
 
-    public void update(){
-
+    public void drawPlatform(Canvas canvas, Paint p) {
+        canvas.drawLine(xStart, yStart, xStop, yStop, p);
     }
+
+    public float getWidth() {
+        return xStop - xStart;
+    }
+
+    public float get_xStart() {
+        return xStart;
+    }
+
+    public float get_yStart() {
+        return yStart;
+    }
+
+    public float get_xStop() {
+        return xStop;
+    }
+
+    public float get_yStoph() {
+        return yStop;
+    }
+
 }
