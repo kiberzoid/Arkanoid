@@ -2,6 +2,7 @@ package kiberzoid.arkanoid;
 
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -10,7 +11,7 @@ public class Platform {
     private float yStart;
     private float xStop;
     private float yStop;
-    private int strokeWidth;
+    private float strokeWidth;
 
     public Platform(float xStart, float yStart, float xStop, float yStop, int strokeWidth) {
         this.xStart = xStart;
@@ -21,7 +22,19 @@ public class Platform {
     }
 
     public void drawPlatform(Canvas canvas, Paint p) {
+        canvas.drawColor(Color.WHITE);
         canvas.drawLine(xStart, yStart, xStop, yStop, p);
+    }
+
+    public void update(float xStart, float xStop,int width) {
+        float platformWidth = this.getWidth();
+        if(xStart + platformWidth>width){
+            this.xStart = width - platformWidth;
+            this.xStop = this.xStart + platformWidth;
+        }else {
+            this.xStart = xStart;
+            this.xStop = xStop;
+        }
     }
 
     public float getStrokeWidth() {

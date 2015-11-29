@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -63,9 +64,18 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            float xStart = event.getX();
+            platform.update(xStart,xStart+platform.getWidth(),DrawView.this.width);
+        }
+        return false;
+    }
+
     private class DrawThread extends Thread {
-        private boolean running = false;
-        private SurfaceHolder holder;
+        public  boolean running = false;
+        public SurfaceHolder holder;
 
         public DrawThread(SurfaceHolder holder) {
             this.holder = holder;
@@ -84,9 +94,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas = holder.lockCanvas();
                     if (canvas == null)
                         continue;
-                    DrawView.this.ball.update(DrawView.this.width,DrawView.this.height,DrawView.this.platform);
-                    DrawView.this.ball.drawBall(canvas, DrawView.this.pCircle);
                     DrawView.this.platform.drawPlatform(canvas, DrawView.this.pLine);
+                    DrawView.this.ball.update(DrawView.this.width, DrawView.this.height, DrawView.this.platform);
+                    DrawView.this.ball.drawBall(canvas, DrawView.this.pCircle);
+                    if(DrawView.this.ball.get_fail()){
+                        setRunning(false);
+                    }
                 } finally {
                     if (canvas != null)
                         holder.unlockCanvasAndPost(canvas);

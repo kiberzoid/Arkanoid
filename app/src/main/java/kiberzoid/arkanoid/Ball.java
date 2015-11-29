@@ -12,6 +12,7 @@ public class Ball {
     private int xSpeed;
     private int ySpeed;
     private int radius;
+    private boolean fail;
 
     public Ball(int xPos,int yPos, int radius,int xSpeed, int ySpeed){
         this.xPos = xPos;
@@ -19,6 +20,7 @@ public class Ball {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.radius = radius;
+        this.fail = false;
     }
 
     public void set_xSpeed(int xSpeed){
@@ -39,14 +41,19 @@ public class Ball {
     public void set_y(int yPos){
         this.yPos = yPos;
     }
-
+    public boolean get_fail(){
+        return this.fail;
+    }
+    public void set_fail(boolean fail){
+        this.fail = fail;
+    }
 
     public void update(int width, int height, Platform platform){
         if(yPos-radius<=0){
             ySpeed*=-1;
         }
         if(yPos+radius>=height){
-            ySpeed*=-1;
+            this.fail = true;
         }
         if(xPos-radius<=0){
             xSpeed*=-1;
@@ -61,7 +68,6 @@ public class Ball {
         yPos+=ySpeed;
     }
     public void drawBall(Canvas canvas,Paint p){
-        canvas.drawColor(Color.WHITE);
         canvas.drawCircle(xPos,yPos,radius,p);
     }
 
