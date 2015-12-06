@@ -17,9 +17,11 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private Platform platform;
     private float width;
     private float height;
+    private int speed;
 
-    public DrawView(Context context) {
+    public DrawView(Context context,int speed) {
         super(context);
+        this.speed = speed;
         this.getHolder().addCallback(this);
     }
 
@@ -28,7 +30,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         Rect surfaceFrame = holder.getSurfaceFrame();
         width = surfaceFrame.width();
         height = surfaceFrame.height();
-        ball = new Ball(width / 2, 40, 20, 20, 20); //Ball(int xPos,int yPos, int radius,int xSpeed, int ySpeed)
+        ball = new Ball(width / 2, 40, 20, speed, speed); //Ball(int xPos,int yPos, int radius,int xSpeed, int ySpeed)
         platform = new Platform(width/4,height-30,width/4+150,height-60); //Platform(float left, float top, float right, float bottom)
         pCircle = new Paint();
         pRect = new Paint();
