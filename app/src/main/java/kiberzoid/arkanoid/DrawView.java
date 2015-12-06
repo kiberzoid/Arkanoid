@@ -5,20 +5,23 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint pCircle;
-    private Paint pLine;
+    private Paint pRect;
     private DrawThread d_thread;
     private Ball ball;
     private Platform platform;
-    private int width;
-    private int height;
+    private float width;
+    private float height;
+    private int speed;
 
-    public DrawView(Context context) {
+    public DrawView(Context context,int speed) {
         super(context);
+        this.speed = speed;
         this.getHolder().addCallback(this);
     }
 
@@ -27,16 +30,14 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         Rect surfaceFrame = holder.getSurfaceFrame();
         width = surfaceFrame.width();
         height = surfaceFrame.height();
-        int stWidthPlatform = 30;
-        ball = new Ball(width / 2, 40, 30, 20, 20);
-        platform = new Platform(height/3,height-1,2*width/3,height-1,stWidthPlatform);
+        ball = new Ball(width / 2, 40, 20, speed, speed); //Ball(int xPos,int yPos, int radius,int xSpeed, int ySpeed)
+        platform = new Platform(width/4,height-30,width/4+150,height-60); //Platform(float left, float top, float right, float bottom)
         pCircle = new Paint();
-        pLine = new Paint();
+        pRect = new Paint();
 
         pCircle.setColor(Color.BLUE);
         pCircle.setStrokeWidth(10);
-        pLine.setColor(Color.GREEN);
-        pLine.setStrokeWidth(stWidthPlatform);
+        pRect.setColor(Color.GREEN);
         //pRect.setStyle(Paint.Style.STROKE);
 
         d_thread = new DrawThread(holder);
@@ -63,9 +64,19 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            float xCenter = event.getX();
+            float yCenter = event.getY();
+            platform.update(xCenter,DrawView.this.width);
+        }
+        return false;
+    }
+
     private class DrawThread extends Thread {
-        private boolean running = false;
-        private SurfaceHolder holder;
+        public  boolean running = false;
+        public SurfaceHolder holder;
 
         public DrawThread(SurfaceHolder holder) {
             this.holder = holder;
@@ -84,9 +95,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas = holder.lockCanvas();
                     if (canvas == null)
                         continue;
-                    DrawView.this.ball.update(DrawView.this.width,DrawView.this.height,DrawView.this.platform);
+                    DrawView.this.platform.drawPlatform(canvas, DrawView.this.pRect);
+                    DrawView.this.ball.update(DrawView.this.width, DrawView.this.height, DrawView.this.platform);
                     DrawView.this.ball.drawBall(canvas, DrawView.this.pCircle);
-                    DrawView.this.platform.drawPlatform(canvas, DrawView.this.pLine);
+                    if(DrawView.this.ball.get_fail()){
+                        setRunning(false);
+                    }
                 } finally {
                     if (canvas != null)
                         holder.unlockCanvasAndPost(canvas);
