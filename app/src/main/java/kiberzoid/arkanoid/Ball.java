@@ -7,18 +7,20 @@ import android.graphics.Rect;
 
 public class Ball {
 
-    private int xPos;
-    private int yPos;
+    private float xPos;
+    private float yPos;
     private int xSpeed;
     private int ySpeed;
     private int radius;
+    private boolean fail;
 
-    public Ball(int xPos,int yPos, int radius,int xSpeed, int ySpeed){
+    public Ball(float xPos,float yPos, int radius,int xSpeed, int ySpeed){
         this.xPos = xPos;
         this.yPos = yPos;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.radius = radius;
+        this.fail = false;
     }
 
     public void set_xSpeed(int xSpeed){
@@ -27,10 +29,10 @@ public class Ball {
     public void set_ySpeed(int ySpeed){
         this.ySpeed = ySpeed;
     }
-    public int get_x(){
+    public float get_x(){
         return this.xPos;
     }
-    public int get_y(){
+    public float get_y(){
         return this.yPos;
     }
     public void set_x(int xPos){
@@ -39,30 +41,113 @@ public class Ball {
     public void set_y(int yPos){
         this.yPos = yPos;
     }
+    public boolean get_fail(){
+        return this.fail;
+    }
+    public void set_fail(boolean fail){
+        this.fail = fail;
+    }
 
+    public void intersectionPlatform(Platform platform){
+        if(yPos < platform.get_bottom()){ //центр сверху
+            if(xPos < platform.get_left()) { // Если центр в левом углу
+                if ((xPos - platform.get_left()) * (xPos - platform.get_left()) + (yPos - platform.get_bottom()) * (yPos - platform.get_bottom()) <= radius * radius) {
+                    ySpeed *= -1;
+                }
+                return;
+            }
+            if(xPos > platform.get_right()) { // Если центр в правом углу
+                if ((xPos - platform.get_right()) * (xPos - platform.get_right()) + (yPos - platform.get_bottom()) * (yPos - platform.get_bottom()) <= radius * radius) {
+                    ySpeed *= -1;
+                }
+                return;
+            }
+            if(platform.get_bottom()-yPos < radius) {
+                ySpeed *= -1;
+            }
+            return;
+        }
+        if(yPos > platform.get_top()){ //центр сверху
+            if(xPos < platform.get_left()) { // Если центр в левом углу
+                if ((xPos - platform.get_left()) * (xPos - platform.get_left()) + (yPos - platform.get_top()) * (yPos - platform.get_top()) <= radius * radius) {
+                    ySpeed *= -1;
+                }
+                return;
+            }
+            if(xPos > platform.get_right()) { // Если центр в правом углу
+                if ((xPos - platform.get_right()) * (xPos - platform.get_right()) + (yPos - platform.get_top()) * (yPos - platform.get_top()) <= radius * radius) {
+                    ySpeed *= -1;
+                }
+                return;
+            }
+            if(yPos-platform.get_top() < radius) {
+                ySpeed *= -1;;
+            }
+            return;
+        }
+        if(xPos < platform.get_left()){ //центр слева
+            if(platform.get_left()-xPos < radius) {
+                xSpeed *= -1;
+            }
+            return;
+        }
+        if (xPos > platform.get_right()){ //центр справа
+            if(xPos-platform.get_right() < radius) {
+                xSpeed *= -1;
+            }
+            return;
+        }
+    }
 
-    public void update(int width, int height, Platform platform){
-        if(yPos-radius<=0){
+    public void update(float width, float height, Platform platform){
+        boolean x_need_return = false;
+        boolean y_need_return = false;
+
+        //отскок от стен
+        if((yPos-radius)<=0){
             ySpeed*=-1;
         }
         if(yPos+radius>=height){
-            ySpeed*=-1;
+            this.fail = true;
         }
-        if(xPos-radius<=0){
+        if((xPos-radius)<=0){
             xSpeed*=-1;
         }
-        if(xPos+radius>=width){
+        if((xPos+radius)>=width){
             xSpeed*=-1;
         }
-       if((yPos>=platform.get_yStart()-platform.getStrokeWidth()-radius)&&(xPos>=platform.get_xStart())&&(xPos<=platform.get_xStop())){
-            ySpeed*=-1;
+
+        if((yPos-radius)+ySpeed<=0){
+            yPos = radius;
+            y_need_return = true;
+        }
+        if((xPos-radius)+xSpeed<=0){
+            xPos = radius;
+            x_need_return = true;
+        }
+        if((xPos+radius)+xSpeed>=width){
+            xPos = width-radius;
+            x_need_return = true;
+        }
+
+        //отскок от платформы
+        intersectionPlatform(platform);
+
+        //обновление координат
+        if(x_need_return&&y_need_return)
+            return;
+        if(x_need_return){
+            yPos+=ySpeed;
+            return;
+        }
+        if(y_need_return){
+            xPos+=xSpeed;
+            return;
         }
         xPos+=xSpeed;
         yPos+=ySpeed;
     }
     public void drawBall(Canvas canvas,Paint p){
-        canvas.drawColor(Color.WHITE);
         canvas.drawCircle(xPos,yPos,radius,p);
     }
-
 }
