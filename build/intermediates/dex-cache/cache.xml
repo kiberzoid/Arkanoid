@@ -2,46 +2,46 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\1\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
-        <dex dex="F:\AndroidProject\Arkanoid\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.1-380a85dd07a340eb241d26622b1572a10d7ca575.jar" />
-    </item>
-    <item
-        jar="F:\AndroidProject\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\libs\internal_impl-23.1.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
-        <dex dex="F:\AndroidProject\Arkanoid\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1-5a1d63102a7dcac250c771280e23d7c1f08c47ea.jar" />
-    </item>
-    <item
-        jar="F:\AndroidProject\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
-        <dex dex="F:\AndroidProject\Arkanoid\app\build\intermediates\pre-dexed\debug\classes-adef7d30578979c078b026d9702d17bd66599710.jar" />
-    </item>
-    <item
-        jar="F:\AndroidProject\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.1.1\jars\classes.jar"
+        jar="G:\AndroidStudio\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.1.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.2"
         sha1="09c5e804bc67fc0580360043dff067df574a60d4">
-        <dex dex="F:\AndroidProject\Arkanoid\app\build\intermediates\pre-dexed\debug\classes-b359a4a0ced2c509d673f4673caf0bf875a8f916.jar" />
+        <dex dex="G:\AndroidStudio\Arkanoid\app\build\intermediates\pre-dexed\debug\classes-b4e4c285ca318d1b939887f08f9c7a82518e8dbd.jar" />
     </item>
     <item
-        jar="F:\AndroidProject\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\design\23.1.1\jars\classes.jar"
+        jar="G:\AndroidStudio\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\libs\internal_impl-23.1.1.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="379471b2bd17d9737c050345c08e8c7d16589784">
-        <dex dex="F:\AndroidProject\Arkanoid\app\build\intermediates\pre-dexed\debug\classes-f2c1b63940f3b4a10f8847f9c993a6a5a04dc6ac.jar" />
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="G:\AndroidStudio\Arkanoid\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1-dc469dec08a9e4744d6bbb923eb07cd714fc5468.jar" />
     </item>
     <item
-        jar="F:\AndroidProject\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
+        jar="G:\AndroidStudio\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.2"
         sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
-        <dex dex="F:\AndroidProject\Arkanoid\app\build\intermediates\pre-dexed\debug\classes-b24fb859a20293423dbf96aaf79a47884dc08067.jar" />
+        <dex dex="G:\AndroidStudio\Arkanoid\app\build\intermediates\pre-dexed\debug\classes-00f0a8f77368263d7e194be2ae6e06b884aa5e72.jar" />
+    </item>
+    <item
+        jar="G:\AndroidStudio\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="G:\AndroidStudio\Arkanoid\app\build\intermediates\pre-dexed\debug\classes-daa739380b489516763417532864fed7b0645981.jar" />
+    </item>
+    <item
+        jar="G:\AndroidStudio\Arkanoid\app\build\intermediates\exploded-aar\com.android.support\design\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="379471b2bd17d9737c050345c08e8c7d16589784">
+        <dex dex="G:\AndroidStudio\Arkanoid\app\build\intermediates\pre-dexed\debug\classes-a22f32baf6ba5074bddeb70958cad68735069542.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kirill\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="G:\AndroidStudio\Arkanoid\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.1-e3afab94d0712cbf46bb580b046d828005a1b9d0.jar" />
     </item>
 
 </items>
