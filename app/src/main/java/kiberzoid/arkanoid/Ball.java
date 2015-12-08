@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+
 public class Ball {
 
     private float xPos;
@@ -98,8 +100,34 @@ public class Ball {
             return;
         }
     }
+    //метод определяет принадлежность точки прямоугольнику
+    public boolean isPointInRect (float x0, float y0, float xLeft, float xRight, float yBottom, float yTop ){
+        if ( (x0<=xRight) && (x0>=xLeft) && (y0<=yTop) && (y0>=yBottom) ) return true;
+        return false;
 
-    public void update(float width, float height, Platform platform){
+    }
+    public void intersectionBlocks(ArrayList<Block> blocks){
+        float leftBlock, rightBlock, topBlock,bottomBlock;
+        for (int i=0;i<blocks.size(); i++){
+            leftBlock = blocks.get(i).getLeft();
+            rightBlock = blocks.get(i).getRight();
+            topBlock = blocks.get(i).getTop();
+            bottomBlock = blocks.get(i).getBottom();
+            if ( (isPointInRect(xPos,yPos,leftBlock,rightBlock,bottomBlock-radius,bottomBlock)) ||
+                    (isPointInRect(xPos,yPos,leftBlock,rightBlock,topBlock,topBlock+radius) ) ) {
+                ySpeed*=-1;
+            }
+
+            if ( isPointInRect(xPos,yPos,leftBlock-radius,leftBlock,bottomBlock,topBlock) ||
+                    isPointInRect(xPos,yPos,rightBlock,rightBlock+radius,bottomBlock,topBlock) ){
+                xSpeed*=-1;
+            }
+        }
+
+
+    }
+
+    public void update(float width, float height, Platform platform, ArrayList<Block> blocks){
         boolean x_need_return = false;
         boolean y_need_return = false;
 
@@ -132,6 +160,9 @@ public class Ball {
 
         //отскок от платформы
         intersectionPlatform(platform);
+
+        //отскок от блоков
+        intersectionBlocks(blocks);
 
         //обновление координат
         if(x_need_return&&y_need_return)

@@ -9,15 +9,25 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
+    //кисти
     private Paint pCircle;
     private Paint pRect;
+    private Paint pBlock;
+
     private DrawThread d_thread;
     private Ball ball;
     private Platform platform;
-    private float width;
-    private float height;
+    private float width; // ширина экрана
+    private float height;// высота экрана
+    private float widthBlock=100; //ширинаблока
+    private float heightBlock=30; //высота блока
     private int speed;
+    private ArrayList<Block> blocks; // массив блоков
+    private int countBlocks = 5; // кол-во блоков
 
     public DrawView(Context context,int speed) {
         super(context);
@@ -32,12 +42,17 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         height = surfaceFrame.height();
         ball = new Ball(width / 2, 40, 20, speed, speed); //Ball(int xPos,int yPos, int radius,int xSpeed, int ySpeed)
         platform = new Platform(width/4,height-30,width/4+150,height-60); //Platform(float left, float top, float right, float bottom)
+        blocks = new ArrayList<>();
+        randomBlocks();
+
         pCircle = new Paint();
         pRect = new Paint();
+        pBlock = new Paint();
 
         pCircle.setColor(Color.BLUE);
         pCircle.setStrokeWidth(10);
         pRect.setColor(Color.GREEN);
+        pBlock.setColor(Color.RED);
         //pRect.setStyle(Paint.Style.STROKE);
 
         d_thread = new DrawThread(holder);
@@ -74,6 +89,38 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         return false;
     }
 
+    //метод случайно заполняет массив блоков
+    public void randomBlocks(){
+        Random random = new Random();
+        float x=0;
+        float y=0;
+        for (int i=0;i<countBlocks;i++) {
+            do {
+                x = random.nextFloat() * (width - widthBlock) + widthBlock / 2;
+                y = random.nextFloat() * (height / 2 - heightBlock) + heightBlock / 2;
+            } while (intersectionBlocks(x,y,widthBlock,heightBlock));
+            blocks.add(new Block(x, y, widthBlock, heightBlock));
+        }
+    }
+
+    //метод вернет истину если новый блок накладывается на уже существующий
+    public boolean intersectionBlocks (float x, float y, float widthBlock, float heightBlock){
+        for (int i=0;i<blocks.size();i++){
+            float x1 = blocks.get(i).getRight() - (x - widthBlock/2);
+            float x2 = (x + widthBlock/2) - blocks.get(i).getLeft();
+
+            float y1 = blocks.get(i).getTop() - (y - heightBlock/2);
+            float y2 = (y + heightBlock/2) - blocks.get(i).getBottom();
+
+            if ( ( Math.max(Math.abs(x1),Math.abs(x2))<=2*widthBlock ) &&
+                (Math.max(Math.abs(y1),Math.abs(y2))<=2*heightBlock)){
+                return  true;
+            }
+        }
+        return false;
+    }
+
+
     private class DrawThread extends Thread {
         public  boolean running = false;
         public SurfaceHolder holder;
@@ -96,8 +143,11 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     if (canvas == null)
                         continue;
                     DrawView.this.platform.drawPlatform(canvas, DrawView.this.pRect);
-                    DrawView.this.ball.update(DrawView.this.width, DrawView.this.height, DrawView.this.platform);
+                    DrawView.this.ball.update(DrawView.this.width, DrawView.this.height, DrawView.this.platform, DrawView.this.blocks);
                     DrawView.this.ball.drawBall(canvas, DrawView.this.pCircle);
+                    for (int i=0; i<blocks.size();i++){
+                        DrawView.this.blocks.get(i).drawBlock(canvas,pBlock);
+                    }
                     if(DrawView.this.ball.get_fail()){
                         setRunning(false);
                     }
