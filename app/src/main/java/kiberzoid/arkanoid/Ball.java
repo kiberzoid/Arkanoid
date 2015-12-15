@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.SoundPool;
 
 import java.util.ArrayList;
 
@@ -50,22 +51,25 @@ public class Ball {
         this.fail = fail;
     }
 
-    public void intersectionPlatform(Platform platform){
+    public void intersectionPlatform(Platform platform,SoundPool sp,int p_otskok_id){
         if(yPos < platform.get_bottom()){ //центр сверху
             if(xPos < platform.get_left()) { // Если центр в левом углу
                 if ((xPos - platform.get_left()) * (xPos - platform.get_left()) + (yPos - platform.get_bottom()) * (yPos - platform.get_bottom()) <= radius * radius) {
                     ySpeed *= -1;
+                    sp.play(p_otskok_id,1,1,0,0,1);
                 }
                 return;
             }
             if(xPos > platform.get_right()) { // Если центр в правом углу
                 if ((xPos - platform.get_right()) * (xPos - platform.get_right()) + (yPos - platform.get_bottom()) * (yPos - platform.get_bottom()) <= radius * radius) {
                     ySpeed *= -1;
+                    sp.play(p_otskok_id,1,1,0,0,1);
                 }
                 return;
             }
             if(platform.get_bottom()-yPos < radius) {
                 ySpeed *= -1;
+                sp.play(p_otskok_id,1,1,0,0,1);
             }
             return;
         }
@@ -73,29 +77,34 @@ public class Ball {
             if(xPos < platform.get_left()) { // Если центр в левом углу
                 if ((xPos - platform.get_left()) * (xPos - platform.get_left()) + (yPos - platform.get_top()) * (yPos - platform.get_top()) <= radius * radius) {
                     ySpeed *= -1;
+                    sp.play(p_otskok_id,1,1,0,0,1);
                 }
                 return;
             }
             if(xPos > platform.get_right()) { // Если центр в правом углу
                 if ((xPos - platform.get_right()) * (xPos - platform.get_right()) + (yPos - platform.get_top()) * (yPos - platform.get_top()) <= radius * radius) {
                     ySpeed *= -1;
+                    sp.play(p_otskok_id,1,1,0,0,1);
                 }
                 return;
             }
             if(yPos-platform.get_top() < radius) {
-                ySpeed *= -1;;
+                ySpeed *= -1;
+                sp.play(p_otskok_id,1,1,0,0,1);
             }
             return;
         }
         if(xPos < platform.get_left()){ //центр слева
             if(platform.get_left()-xPos < radius) {
                 xSpeed *= -1;
+                sp.play(p_otskok_id,1,1,0,0,1);
             }
             return;
         }
         if (xPos > platform.get_right()){ //центр справа
             if(xPos-platform.get_right() < radius) {
                 xSpeed *= -1;
+                sp.play(p_otskok_id,1,1,0,0,1);
             }
             return;
         }
@@ -127,7 +136,7 @@ public class Ball {
 
     }
 
-    public void update(float width, float height, Platform platform, ArrayList<Block> blocks){
+    public void update(float width, float height, Platform platform, ArrayList<Block> blocks,SoundPool sp, int p_otskok_id){
         boolean x_need_return = false;
         boolean y_need_return = false;
 
@@ -159,7 +168,7 @@ public class Ball {
         }
 
         //отскок от платформы
-        intersectionPlatform(platform);
+        intersectionPlatform(platform,sp,p_otskok_id);
 
         //отскок от блоков
         intersectionBlocks(blocks);

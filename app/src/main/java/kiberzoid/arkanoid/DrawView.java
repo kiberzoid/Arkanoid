@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,6 +16,7 @@ import java.util.Random;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     //кисти
+    private Context context;
     private Paint pCircle;
     private Paint pRect;
     private Paint pBlock;
@@ -28,9 +31,11 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private int speed;
     private ArrayList<Block> blocks; // массив блоков
     private int countBlocks = 5; // кол-во блоков
+    private SoundPool sp;
 
     public DrawView(Context context,int speed) {
         super(context);
+        this.context = context;
         this.speed = speed;
         this.getHolder().addCallback(this);
     }
@@ -42,6 +47,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         height = surfaceFrame.height();
         ball = new Ball(width / 2, 40, 20, speed, speed); //Ball(int xPos,int yPos, int radius,int xSpeed, int ySpeed)
         platform = new Platform(width/4,height-30,width/4+150,height-60); //Platform(float left, float top, float right, float bottom)
+        sp = new SoundPool(1, AudioManager.STREAM_MUSIC,0);
         blocks = new ArrayList<>();
         randomBlocks();
 
@@ -54,6 +60,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         pRect.setColor(Color.GREEN);
         pBlock.setColor(Color.RED);
         //pRect.setStyle(Paint.Style.STROKE);
+        sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+
+            }
+        });
 
         d_thread = new DrawThread(holder);
         d_thread.setRunning(true);
@@ -135,6 +147,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
         @Override
         public void run() {
+            int p_otskok_id = sp.load(DrawView.this.context,R.raw.p_otskok,1);
             Canvas canvas;
             while (running) {
                 canvas = null;
@@ -143,7 +156,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     if (canvas == null)
                         continue;
                     DrawView.this.platform.drawPlatform(canvas, DrawView.this.pRect);
-                    DrawView.this.ball.update(DrawView.this.width, DrawView.this.height, DrawView.this.platform, DrawView.this.blocks);
+                    DrawView.this.ball.update(DrawView.this.width, DrawView.this.height, DrawView.this.platform, DrawView.this.blocks,DrawView.this.sp,p_otskok_id);
                     DrawView.this.ball.drawBall(canvas, DrawView.this.pCircle);
                     for (int i=0; i<blocks.size();i++){
                         DrawView.this.blocks.get(i).drawBlock(canvas,pBlock);
