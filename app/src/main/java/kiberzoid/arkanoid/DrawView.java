@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
+    private Context context;
     //кисти
     private Paint pCircle;
     private Paint pRect;
@@ -28,9 +32,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private int speed;
     private ArrayList<Block> blocks; // массив блоков
     private int countBlocks = 5; // кол-во блоков
+    private SoundPool sp;
+    MediaPlayer mediaPlayer;
 
     public DrawView(Context context,int speed) {
         super(context);
+        this.context = context;
         this.speed = speed;
         this.getHolder().addCallback(this);
     }
@@ -42,6 +49,8 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         height = surfaceFrame.height();
         ball = new Ball(width / 2, 40, 20, speed, speed); //Ball(int xPos,int yPos, int radius,int xSpeed, int ySpeed)
         platform = new Platform(width/4,height-30,width/4+150,height-60); //Platform(float left, float top, float right, float bottom)
+        sp = new SoundPool(3, AudioManager.STREAM_MUSIC,0);
+        mediaPlayer = MediaPlayer.create(context,R.raw.background);
         blocks = new ArrayList<>();
         randomBlocks();
 
@@ -53,6 +62,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         pCircle.setStrokeWidth(10);
         pRect.setColor(Color.GREEN);
         pBlock.setColor(Color.RED);
+        sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+
+            }
+        });
         //pRect.setStyle(Paint.Style.STROKE);
 
         d_thread = new DrawThread(holder);
@@ -135,15 +150,19 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
         @Override
         public void run() {
+            int p_otskok_id = sp.load(DrawView.this.context, R.raw.bulbpop, 1);
+            int fail_id = sp.load(DrawView.this.context, R.raw.fail, 1);
             Canvas canvas;
+            mediaPlayer.start();
             while (running) {
                 canvas = null;
                 try {
                     canvas = holder.lockCanvas();
+
                     if (canvas == null)
                         continue;
                     DrawView.this.platform.drawPlatform(canvas, DrawView.this.pRect);
-                    DrawView.this.ball.update(DrawView.this.width, DrawView.this.height, DrawView.this.platform, DrawView.this.blocks);
+                    DrawView.this.ball.update(DrawView.this.width, DrawView.this.height, DrawView.this.platform, DrawView.this.blocks, DrawView.this.sp, p_otskok_id, fail_id);
                     DrawView.this.ball.drawBall(canvas, DrawView.this.pCircle);
                     for (int i=0; i<blocks.size();i++){
                         DrawView.this.blocks.get(i).drawBlock(canvas,pBlock);
@@ -156,6 +175,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                         holder.unlockCanvasAndPost(canvas);
                 }
             }
+            mediaPlayer.stop();
         }
     }
 }
