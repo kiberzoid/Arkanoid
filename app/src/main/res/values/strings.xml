@@ -6,5 +6,5 @@
     <string name="settings_cancel_button">Cancel</string>
     <string name="hello_text">Lets get start</string>
     <string name="title_activity_game">GameActivity</string>
-    <string name="speed_text">Speed</string>
+    <string name="speed_text">Speed:</string>
 </resources>
